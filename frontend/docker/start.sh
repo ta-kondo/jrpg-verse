@@ -5,11 +5,8 @@ echo -----------------------------------------------------------------
 echo -- Start
 echo -----------------------------------------------------------------
 
-# install from package.json
-# npm install
-
 # start development server
-# npm run dev
+npm run dev
 
 # infinite loop !
-tail -f /dev/null
+# tail -f /dev/null
