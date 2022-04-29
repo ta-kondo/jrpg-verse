@@ -1,0 +1,65 @@
+{
+    "name": "jrpg-verse",
+
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+
+    "service" : "frontend",
+
+    "workspaceFolder" : "/home/project",
+
+    // デフォルトのVisual Studio Codeからのコンテナ起動時のコマンドの、
+    // while sleep 1000; do :; doneによる上書きを防止
+    "overrideCommand": false,
+
+    "forwardPorts": [
+        8080
+    ],
+
+    // リモート側へインストールするVSCode拡張
+	"extensions": [
+        "shardulm94.trailing-spaces",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        // "streetsidesoftware.code-spell-checker",
+        "bradlc.vscode-tailwindcss",
+        "csstools.postcss"
+	],
+
+    // ビルド後に実行するコマンド
+    // "onCreateCommand": "pip3 install pylint-django black; apt install -y postgresql-client",
+
+    // コンテナ内部でのVSCode設定
+    // コード整形
+    "settings": {
+        "files.exclude": {
+            // dockerフォルダは除外
+            "**/docker": true,
+            // node_modules を表示除外する(をしないに変更 true->false)
+            "**/node_modules": false,
+        },
+        // インデントのサイズを 2 に設定
+        "editor.tabSize": 2,
+        // 保存時にフォーマッタを走らせる
+        "editor.formatOnSave": true,
+        // デフォルトのフォーマッタを Prettier に設定
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        // 標準の構文チェックをしない
+        "css.validate": false,
+        "scss.validate": false,
+        "editor.codeActionsOnSave": {
+            // 保存時に import を整理する
+            "source.organizeImports": true,
+            // 保存時に ESLint で修正する
+            "source.fixAll.eslint": true
+        },
+        // Markdown ファイルの末尾の空白を取り除く
+        "[markdown]": {
+          "files.trimTrailingWhitespace": false
+        }
+    },
+
+    // 閉じた際、コンテナも停止する
+    "shutdownAction": "stopCompose"
+}

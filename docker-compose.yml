@@ -1,0 +1,22 @@
+version: "3.7"
+# Used for remote development with VSCode.
+services:
+
+  # ------------------------------------
+  # frontend
+  #
+  frontend:
+    image: frontend-server
+    build:
+      context: ./frontend
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ./frontend:/home/project
+      - node_modules:/home/project/node_modules
+    ports:
+      - "3030:3000"
+    working_dir: /home/project
+
+volumes:
+  node_modules:
+    driver: local

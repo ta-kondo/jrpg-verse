@@ -1,0 +1,3 @@
+# ignore
+./frontend/docker/
+./frontend/node_modules/
