@@ -4,9 +4,16 @@
 
 ---
 
+(割愛)
+
 ## プロジェクト構成
 
 ---
+
+参考にしたのは
+
+- [React のディレクトリ構成で Atomic デザインをやめた話](https://zenn.dev/brachio_takumi/articles/2ab9ef9fbe4159)
+- [React ベストプラクティスの宝庫！「bulletproof-react」が勉強になりすぎる件](https://zenn.dev/meijin/articles/bulletproof-react-is-best-architecture)
 
 ```bash
 frontend
