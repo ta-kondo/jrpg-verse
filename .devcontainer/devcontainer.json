@@ -49,8 +49,8 @@
         "css.validate": false,
         "scss.validate": false,
         "editor.codeActionsOnSave": {
-            // 保存時に import を整理する
-            "source.organizeImports": true,
+            // 保存時に import を整理する(はeslintがやるのでしない)
+            "source.organizeImports": false,
             // 保存時に ESLint で修正する
             "source.fixAll.eslint": true
         },
