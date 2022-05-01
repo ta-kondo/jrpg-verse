@@ -35,7 +35,7 @@ class Game extends Phaser.Game {
 /**
  * ゲームを描写するDivコンポーネント
  */
-export const App: React.FC<{ className?: string }> = ({ className }) => {
+export const GameScreen: () => JSX.Element = () => {
   // お手軽にCSSの設定（フルスクリーンで、Canvasを中央寄せにする）
   const style: CSSProperties = {
     width: "100vw",
@@ -53,5 +53,5 @@ export const App: React.FC<{ className?: string }> = ({ className }) => {
   }, []);
 
   // canvasをAppendするdivコンポーネント
-  return <div id="game" className={className} style={style}></div>;
+  return <div id="game" style={style}></div>;
 };

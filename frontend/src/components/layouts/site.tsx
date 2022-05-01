@@ -1,7 +1,5 @@
-import { ReactElement } from "react";
-
 type LayoutProps = Required<{
-  readonly children: ReactElement;
+  readonly children: JSX.Element;
 }>;
 
 export const SiteLayout = ({ children }: LayoutProps) => (

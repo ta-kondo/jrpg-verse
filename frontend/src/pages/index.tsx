@@ -1,12 +1,4 @@
-import dynamic from "next/dynamic";
-
-const App = dynamic(
-  async () => {
-    const module = await import("@/features/game/app");
-    return module.App;
-  },
-  { ssr: false },
-);
+import Screen from "@/components/ui-parts/game_screen";
 
 const Home = (): JSX.Element => {
   return (
@@ -14,7 +6,7 @@ const Home = (): JSX.Element => {
       <div id="gamea" className="App">
         Hello.{"  s"}
       </div>
-      <App></App>
+      <Screen></Screen>
     </>
   );
 };
