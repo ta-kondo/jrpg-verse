@@ -7,6 +7,15 @@ import { Player } from "./player";
 
 // https://zenn.dev/citrono_lemon/scraps/7862df38f8851a
 
+const CANVAS_WIDTH = 720;
+const CANVAS_HEIGHT = 528;
+
+const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
+  active: false,
+  visible: false,
+  key: "Game",
+};
+
 /**
  * メインシーン
  * 一応説明しておくと、
@@ -16,16 +25,12 @@ import { Player } from "./player";
 class MainScene extends Phaser.Scene {
   static readonly DEFAULT_SCALE = 2.0;
   static readonly TILE_SIZE = 16 * MainScene.DEFAULT_SCALE;
-
   private gridControls!: GridControls;
   private gridPhysics!: GridPhysics;
 
   constructor() {
-    super({
-      key: "Main",
-    });
+    super(sceneConfig);
   }
-
   /**
    * 初期処理
    */
@@ -75,8 +80,9 @@ class MainScene extends Phaser.Scene {
     const player = new Player(playerSprite, new Phaser.Math.Vector2(10, 10));
 
     // プレイヤーの操作
-    this.gridPhysics = new GridPhysics(player);
+    this.gridPhysics = new GridPhysics(player, vacantLandTilemap);
     this.gridControls = new GridControls(this.input, this.gridPhysics);
+
     this.createPlayerAnimation(Direction.UP, 90, 92);
     this.createPlayerAnimation(Direction.RIGHT, 78, 80);
     this.createPlayerAnimation(Direction.DOWN, 54, 56);

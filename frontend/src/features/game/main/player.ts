@@ -23,12 +23,25 @@ export class Player {
     this.sprite.setPosition(position.x, position.y);
   }
 
-  stopAnimation() {
+  stopAnimation(direction: Direction) {
+    // const animationManager = this.sprite.anims.animationManager;
+    // ここもエラーになるのでコメントアウト(^^)v
+    // const standingFrame = animationManager.get(direction).frames[1].frame.name;
     this.sprite.anims.stop();
+    // this.sprite.setFrame(standingFrame);
   }
 
   startAnimation(direction: Direction) {
-    console.log(direction);
-    //this.sprite.anims.play(direction);
+    // console.log(direction);
+    // ここでエラーが出るのでキャラが1方向しか向かない😢
+    // this.sprite.anims.play(direction);
+  }
+
+  getTilePos(): Phaser.Math.Vector2 {
+    return this.tilePos.clone();
+  }
+
+  setTilePos(tilePosition: Phaser.Math.Vector2): void {
+    this.tilePos = tilePosition.clone();
   }
 }
