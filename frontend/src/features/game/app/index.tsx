@@ -5,7 +5,7 @@ import MainScene from "../main";
 
 // Phaserの設定
 const config: Phaser.Types.Core.GameConfig = {
-  width: 1280,
+  width: 720,
   height: 720,
   type: Phaser.AUTO,
   pixelArt: false,
