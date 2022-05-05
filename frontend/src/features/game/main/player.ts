@@ -24,17 +24,14 @@ export class Player {
   }
 
   stopAnimation(direction: Direction) {
-    // const animationManager = this.sprite.anims.animationManager;
-    // ここもエラーになるのでコメントアウト(^^)v
-    // const standingFrame = animationManager.get(direction).frames[1].frame.name;
+    const animationManager = this.sprite.anims.animationManager;
+    const standingFrame = animationManager.get(direction).frames[1].frame.name;
     this.sprite.anims.stop();
-    // this.sprite.setFrame(standingFrame);
+    this.sprite.setFrame(standingFrame);
   }
 
   startAnimation(direction: Direction) {
-    // console.log(direction);
-    // ここでエラーが出るのでキャラが1方向しか向かない😢
-    // this.sprite.anims.play(direction);
+    this.sprite.anims.play(direction);
   }
 
   getTilePos(): Phaser.Math.Vector2 {
