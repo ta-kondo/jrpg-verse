@@ -48,9 +48,9 @@ class MainScene extends Phaser.Scene {
     this.load.tilemapTiledJSON("vacant-land-map", "assets/town/map.json");
 
     // プレイヤー
-    this.load.spritesheet("player", "assets/chara/pipo-charachip001.png", {
-      frameWidth: 32,
-      frameHeight: 32,
+    this.load.spritesheet("player", "assets/chara/characters.png", {
+      frameWidth: 26,
+      frameHeight: 36,
     });
   }
 
