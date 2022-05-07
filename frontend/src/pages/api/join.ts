@@ -11,7 +11,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const { username } = req.query;
     const data = {
       // generate id
-      client_id: uuidv4().replaceAll("-", ""),
+      client_id: uuidv4().replace(/-/g, ""),
       name: username,
     } as IData;
     joined_users.push(data);
