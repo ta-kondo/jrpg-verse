@@ -8,7 +8,7 @@ const randomDataGenerator = new phaserMath.RandomDataGenerator();
 export class Player {
   public charaId = randomDataGenerator.integerInRange(100000, 100000000);
   public CHARACTOR_ICON = 1;
-  constructor(private sprite: Phaser.GameObjects.Sprite, private tilePos: Phaser.Math.Vector2) {
+  constructor(public sprite: Phaser.GameObjects.Sprite, private tilePos: Phaser.Math.Vector2) {
     const offsetX = GameScene.TILE_SIZE / 2;
     const offsetY = GameScene.TILE_SIZE;
 
