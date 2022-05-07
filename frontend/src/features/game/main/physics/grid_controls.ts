@@ -1,4 +1,4 @@
-import { Direction } from "./direction";
+import { Direction } from "../direction";
 import { GridPhysics } from "./grid_physics";
 
 export class GridControls {
@@ -15,5 +15,13 @@ export class GridControls {
     } else if (cursors.down.isDown) {
       this.gridPhysics.movePlayer(Direction.DOWN);
     }
+  }
+}
+
+export class CharaGridControls {
+  constructor(private gridPhysics: GridPhysics) {}
+
+  update(direction?: Direction) {
+    !direction || this.gridPhysics.movePlayer(direction);
   }
 }

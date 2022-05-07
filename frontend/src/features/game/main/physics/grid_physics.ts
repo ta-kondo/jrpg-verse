@@ -1,7 +1,6 @@
-import { Direction } from "./direction";
-import { Player } from "./player";
-
-import GameScene from ".";
+import GameScene from "..";
+import { Direction } from "../direction";
+import { Player } from "../players/player";
 
 const Vector2 = Phaser.Math.Vector2;
 type Vector2 = Phaser.Math.Vector2;
