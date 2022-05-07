@@ -3,7 +3,6 @@ import { Server as NetServer } from "http";
 import { NextApiRequest } from "next";
 import { Server as ServerIO } from "socket.io";
 
-import { IData } from "@/common/types/message";
 import { NextApiResponseServerIO } from "@/common/types/next";
 
 export const config = {
@@ -28,14 +27,6 @@ const handler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
     // functions
     io.on("connection", (socket) => {
       console.info(`Client connected... socket.id=${socket.id}`);
-    });
-    io.on("join", (msg: IData) => {
-      console.info(`Client joined... socket.id=${msg.client_id}`);
-      io.emit("joined", msg);
-    });
-    io.on("update", (msg: IData) => {
-      console.info(`Client update... socket.id=${msg.client_id}, Direction=${msg.direction}`);
-      io.emit("updateed", msg);
     });
   }
   res.end();

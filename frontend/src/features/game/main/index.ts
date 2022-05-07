@@ -1,7 +1,7 @@
 import { Socket, io } from "socket.io-client";
 
 import { Member } from "@/common/types/member";
-import { IData } from "@/common/types/message";
+import { IData } from "@/common/types/messagedata";
 import "phaser";
 
 import { Direction } from "./direction";
@@ -35,6 +35,10 @@ class MainScene extends Phaser.Scene {
   private socket!: Socket;
 
   private members: Array<Member> = [];
+  private userinfo = {
+    client_id: "",
+    username: "",
+  };
 
   constructor() {
     super(sceneConfig);
@@ -70,7 +74,7 @@ class MainScene extends Phaser.Scene {
   /**
    * ゲーム画面の作成処理やイベントアクションを記述する処理
    */
-  async create(): void {
+  async create() {
     this.add.text(10, 10, "Hello, phaser");
 
     // ソケット生成
@@ -115,28 +119,25 @@ class MainScene extends Phaser.Scene {
       //   // 自分の参加イベントは無視
       //   return;
       // }
-      console.log(`1`);
       const joined = this.members.find((member) => {
         return member.client_id == msg.client_id;
       });
-      console.log(`2`);
       if (joined) {
         // 既に処理済み
         return;
       }
-      console.log(`3`);
       // 参加者のキャラ生成
       const charaSprite = this.add.sprite(0, 0, "charactor");
       charaSprite.setDepth(2);
       charaSprite.scale = MainScene.DEFAULT_SCALE;
       const charactor = new Charactor(charaSprite, new Phaser.Math.Vector2(10, 10));
+      const charaId = charactor.charaId.toString();
       const physics = new GridPhysics(charactor, vacantLandTilemap);
       // 動作の生成
-      this.createPlayerAnimation("charactor", Direction.UP, 9, 11);
-      this.createPlayerAnimation("charactor", Direction.RIGHT, 6, 8);
-      this.createPlayerAnimation("charactor", Direction.DOWN, 0, 2);
-      this.createPlayerAnimation("charactor", Direction.LEFT, 3, 5);
-      console.log(`4`);
+      this.createPlayerAnimation("charactor", `${charaId}:${Direction.UP}`, 9, 11);
+      this.createPlayerAnimation("charactor", `${charaId}:${Direction.RIGHT}`, 6, 8);
+      this.createPlayerAnimation("charactor", `${charaId}:${Direction.DOWN}`, 0, 2);
+      this.createPlayerAnimation("charactor", `${charaId}:${Direction.LEFT}`, 3, 5);
       //キャラの保持
       this.members.push({
         client_id: msg.client_id,
@@ -153,29 +154,35 @@ class MainScene extends Phaser.Scene {
       // setConnected(true);
     });
 
-    // APIでのクライアントIDの払い出し
-    let joininfo: IData;
-    const username = "testaaa";
-    await fetch(`/api/join/?username=${username}`).then(async (response) => {
+    this.userinfo.username = "tekitou name";
+    // 参加実行
+    await fetch(`/api/join/?username=${this.userinfo.username}`).then(async (response) => {
       await response.json().then((data: { client_id: string; users: Array<IData> }) => {
         // 参加済
         data.users.forEach((msg) => {
           if (data.client_id == msg.client_id) {
-            joininfo = msg;
+            // 自分
+            this.userinfo.client_id = msg.client_id;
           } else {
             // 参加者のキャラ追加
             joined(msg);
           }
-          console.log("join!!");
-          console.log(joininfo);
         });
       });
     });
 
     // 参加イベント
     socket.on("joined", joined);
-    socket.on("updateed", (msg: IData) => {
-      //
+    // キャラ移動イベント
+    socket.on("updated", (data: IData) => {
+      this.members
+        .filter((member) => {
+          return member.client_id != this.userinfo.client_id && member.client_id == data.client_id;
+        })
+        .forEach((member) => {
+          member.controls.update(data.directions);
+          member.physics.update(data.delta);
+        });
     });
   }
 
@@ -192,6 +199,7 @@ class MainScene extends Phaser.Scene {
     });
   }
 
+  private standingCount = 0;
   /**
    * メインループ
    */
@@ -199,11 +207,52 @@ class MainScene extends Phaser.Scene {
     this.gridControls.update();
     this.gridPhysics.update(delta);
 
-    this.members.forEach((member) => {
-      member.controls.update();
-      member.physics.update(delta);
-    });
+    const data = this.makeDirection();
+    data.delta = delta;
+
+    const MAX_COUNT = 20;
+
+    // 棒立ちを数える
+    if (data.directions == 0) {
+      this.standingCount++;
+    } else {
+      this.standingCount = 0;
+    }
+    // オーバーフロー対策
+    if (data.directions > 100000) {
+      this.standingCount = MAX_COUNT;
+    }
+    // 動いていればキーを送信
+    const resp =
+      this.standingCount < MAX_COUNT
+        ? fetch("/api/move", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+        : undefined;
   }
+
+  private makeDirection = (): IData => {
+    const cursors = this.input.keyboard.createCursorKeys();
+    let direction = 0;
+    if (cursors.left.isDown) {
+      direction += 1; // Direction.LEFT;
+    } else if (cursors.right.isDown) {
+      direction += 2; // Direction.RIGHT;
+    } else if (cursors.up.isDown) {
+      direction += 4; // Direction.UP;
+    } else if (cursors.down.isDown) {
+      direction += 8; // Direction.DOWN;
+    }
+    return {
+      client_id: this.userinfo.client_id,
+      name: this.userinfo.username,
+      directions: direction,
+    } as IData;
+  };
 }
 
 export default MainScene;

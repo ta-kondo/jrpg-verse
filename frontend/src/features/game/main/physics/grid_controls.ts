@@ -21,7 +21,10 @@ export class GridControls {
 export class CharaGridControls {
   constructor(private gridPhysics: GridPhysics) {}
 
-  update(direction?: Direction) {
-    !direction || this.gridPhysics.movePlayer(direction);
+  update(directions: number) {
+    if (directions & 1 /* Direction.LEFT */) this.gridPhysics.movePlayer(Direction.LEFT);
+    if (directions & 2 /* Direction.RIGHT */) this.gridPhysics.movePlayer(Direction.RIGHT);
+    if (directions & 4 /* Direction.UP */) this.gridPhysics.movePlayer(Direction.UP);
+    if (directions & 8 /* Direction.DOWN */) this.gridPhysics.movePlayer(Direction.DOWN);
   }
 }

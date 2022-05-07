@@ -1,7 +1,7 @@
 import { NextApiRequest } from "next";
 import { v4 as uuidv4 } from "uuid";
 
-import { IData } from "@/common/types/message";
+import { IData } from "@/common/types/messagedata";
 import { NextApiResponseServerIO } from "@/common/types/next";
 
 const joined_users: Array<IData> = [];
