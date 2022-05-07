@@ -78,7 +78,7 @@ class MainScene extends Phaser.Scene {
     this.add.text(10, 10, "Hello, phaser");
 
     // ソケット生成
-    this.socket = io("http://localhost:3030", { path: "/api/socketio" });
+    this.socket = io("", { path: "/api/socketio" });
     // connect to socket server
     // const socket = io(`/api/socketio`);
     const socket = this.socket;
