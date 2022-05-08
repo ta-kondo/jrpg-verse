@@ -1,0 +1,25 @@
+# ------------------------------------------------
+# -- jrpg-verse: production
+# ------------------------------------------------
+
+# node.js
+FROM node:17-buster-slim
+
+# 日本時間に設定
+ENV TZ Asia/Tokyo
+
+WORKDIR /home/project
+
+# ソースのコピー
+COPY ./ ./
+
+RUN apt-get -y update; \
+    apt-get -y upgrade; \
+    npm update; \
+# install from package.json
+    npm install; \
+# build Next.js project
+    npm run build
+
+EXPOSE 3000
+CMD ["npm", "run", "start"]
